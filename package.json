@@ -1,0 +1,43 @@
+{
+  "name": "markedly",
+  "description": "Turn markdown directories into JSON",
+  "version": "0.0.1",
+  "repository": "https://github.com/lukemorton/markedly",
+  "license": "MIT",
+  "dependencies": {
+    "date-fns": "^1.22.0",
+    "fs-promise": "^1.0.0",
+    "marked": "^0.3.6",
+    "striptags": "^2.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "jest": "^20.0.4",
+    "standard": "^10.0.3"
+  },
+  "engines": {
+    "node": "7.0.0"
+  },
+  "main": "lib/markedly.js",
+  "scripts": {
+    "build": "babel src/ -d dist/lib/",
+    "test": "standard && jest"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-2",
+      "react"
+    ]
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "it",
+      "expect"
+    ]
+  }
+}
