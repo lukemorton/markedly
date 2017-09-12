@@ -1,6 +1,6 @@
-import createList from './createList'
+import buildList from './buildList'
 
 export default async function ({ read, write, limit, preview }) {
   const files = await read()
-  return createList({ write, files, limit, preview })
+  return write(buildList({ files, limit, preview }))
 }
