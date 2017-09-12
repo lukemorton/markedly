@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { createListFromDirectory } from './markedly'
+import { createListFromDirectory, createMapFromDirectory } from './markedly'
 
 describe('createListFromFiles', () => {
   function deleteIfExists (path) {
@@ -27,6 +27,10 @@ describe('createListFromFiles', () => {
 
     it('should write list', async () => {
       await createListFromDirectory({ dir, outFilePath })
+    })
+
+    it('should write map', async () => {
+      await createMapFromDirectory({ dir, outFilePath })
     })
   })
 })
