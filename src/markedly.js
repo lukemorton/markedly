@@ -10,8 +10,8 @@ export async function createListFromDirectory ({ dir, outFilePath, limit, previe
   return createListFromFiles({ read, write, limit, preview })
 }
 
-export async function createMapFromDirectory ({ dir, outFilePath, limit, preview }) {
+export async function createMapFromDirectory ({ dir, outFilePath, preview }) {
   const read = partial(directoryFilesGateway.read, dir)
   const write = partial(jsonFileGateway.write, outFilePath)
-  return createMapFromFiles({ read, write, limit, preview })
+  return createMapFromFiles({ read, write, preview })
 }
