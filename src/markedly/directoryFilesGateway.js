@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import glob from 'glob'
 import path from 'path'
+import partial from 'lodash.partial'
 
 function fullFilenames (dir) {
   return new Promise(function (resolve, reject) {
@@ -11,12 +12,13 @@ function fullFilenames (dir) {
   })
 }
 
-async function slugAndContent (filename) {
-  return [path.basename(filename, '.md'), await fs.readFile(filename, 'utf8')]
+async function slugAndContent (dir, filename) {
+  const slug = filename.substring(dir.length + 1, filename.indexOf('.md'))
+  return [slug, await fs.readFile(filename, 'utf8')]
 }
 
-async function slugsAndContents (filenames) {
-  const pairs = await Promise.all(filenames.map(slugAndContent))
+async function slugsAndContents (dir, filenames) {
+  const pairs = await Promise.all(filenames.map(partial(slugAndContent, dir)))
   const _ = (slugsAndContents, [slug, content]) => {
     return { ...slugsAndContents, [slug]: content }
   }
@@ -25,5 +27,5 @@ async function slugsAndContents (filenames) {
 
 export async function read (dir) {
   const filenames = await fullFilenames(dir)
-  return slugsAndContents(filenames)
+  return slugsAndContents(dir, filenames)
 }
