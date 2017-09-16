@@ -24,6 +24,12 @@ describe('buildList', () => {
     expect(list.length).toBe(limit)
   })
 
+  it('can be reversed', () => {
+    const list = buildList({ files: fakeFiles(), options: { reverse: true } })
+    const firstDate = list[0].publishedAtISO
+    expect(firstDate).toBe(format(new Date(2016, 0, 4)))
+  })
+
   it('excludes articles published in future by default', () => {
     const files = fakeFiles()
     files['2050-02-01-cool'] = '# Cool'
