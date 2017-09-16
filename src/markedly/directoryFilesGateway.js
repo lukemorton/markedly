@@ -1,9 +1,14 @@
 import fs from 'fs-extra'
+import glob from 'glob'
 import path from 'path'
 
-async function fullFilenames (dir) {
-  const filenames = await fs.readdir(dir)
-  return filenames.map(filename => path.join(dir, filename))
+function fullFilenames (dir) {
+  return new Promise(function (resolve, reject) {
+    glob(path.join(dir, '**/*.md'), function (err, files) {
+      if (err) reject(err)
+      resolve(files)
+    })
+  })
 }
 
 async function slugAndContent (filename) {
