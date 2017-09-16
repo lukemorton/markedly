@@ -1,13 +1,13 @@
-import fsp from 'fs-promise'
+import fs from 'fs-extra'
 import path from 'path'
 
 async function fullFilenames (dir) {
-  const filenames = await fsp.readdir(dir)
+  const filenames = await fs.readdir(dir)
   return filenames.map(filename => path.join(dir, filename))
 }
 
 async function slugAndContent (filename) {
-  return [path.basename(filename, '.md'), await fsp.readFile(filename, 'utf8')]
+  return [path.basename(filename, '.md'), await fs.readFile(filename, 'utf8')]
 }
 
 async function slugsAndContents (filenames) {

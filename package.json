@@ -6,7 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "date-fns": "^1.22.0",
-    "fs-promise": "^1.0.0",
+    "fs-extra": "^4.0.2",
     "lodash.partial": "^4.2.1",
     "marked": "^0.3.6",
     "striptags": "^2.1.1"
