@@ -1,6 +1,13 @@
 import articles from './article'
-import sortByDateOrderDesc from './sortByDateOrderDesc'
 import parseDate from './parseDate'
+
+function sort (sortable, reverse) {
+  if (reverse) {
+    return sortable.sort().reverse()
+  } else {
+    return sortable.sort()
+  }
+}
 
 function published (slugs, dev) {
   if (dev) {
@@ -12,7 +19,7 @@ function published (slugs, dev) {
   return slugs.filter((slug) => today >= parseDate(slug))
 }
 
-function limitBy (limitable, limit) {
+function limit (limitable, limit) {
   if (limit) {
     return limitable.slice(0, limit)
   } else {
@@ -26,8 +33,8 @@ function listOfArticles (filenames, files) {
   })
 }
 
-export default function ({ limit, files, preview }) {
+export default function ({ files, options, preview }) {
   const filenames = Object.keys(files)
-  const sortedFilenames = limitBy(published(sortByDateOrderDesc(filenames), preview), limit)
+  const sortedFilenames = limit(published(sort(filenames, options.reverse), preview), options.limit)
   return listOfArticles(sortedFilenames, files)
 }
