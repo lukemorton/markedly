@@ -16,11 +16,12 @@ describe('buildList', () => {
   })
 
   it('can be limited', () => {
-    const list = buildList({ limit: 2, files: fakeFiles() })
+    const limit = 2
+    const list = buildList({ files: fakeFiles(), options: { limit } })
     const firstDate = list[0].publishedAtISO
 
-    expect(firstDate).toBe(format(new Date(2016, 0, 4)))
-    expect(list.length).toBe(2)
+    expect(firstDate).toBe(format(new Date(2016, 0, 1)))
+    expect(list.length).toBe(limit)
   })
 
   it('excludes articles published in future by default', () => {
@@ -35,5 +36,10 @@ describe('buildList', () => {
     files['2050-02-01-cool'] = '# Cool'
     const list = buildList({ preview: true, files })
     expect(list.length).toBe(4)
+  })
+
+  it('returns empty list of files empty', () => {
+    const list = buildList({ files: [] })
+    expect(list.length).toBe(0)
   })
 })

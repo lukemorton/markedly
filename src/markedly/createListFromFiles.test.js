@@ -14,9 +14,9 @@ describe('createListFromFiles', () => {
     const write = jest.fn()
     await createListFromFiles({ read, write })
     expect(write).toBeCalledWith([
-      expect.objectContaining({ slug: '2016-01-04-cool' }),
+      expect.objectContaining({ slug: '2016-01-01-cool' }),
       expect.objectContaining({ slug: '2016-01-02-cool' }),
-      expect.objectContaining({ slug: '2016-01-01-cool' })
+      expect.objectContaining({ slug: '2016-01-04-cool' })
     ])
   })
 })

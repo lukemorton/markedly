@@ -34,6 +34,7 @@ function listOfArticles (filenames, files) {
 }
 
 export default function ({ files, options, preview }) {
+  options = options || {}
   const filenames = Object.keys(files)
   const sortedFilenames = limit(published(sort(filenames, options.reverse), preview), options.limit)
   return listOfArticles(sortedFilenames, files)
