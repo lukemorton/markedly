@@ -4,73 +4,142 @@ import fm from 'front-matter'
 import marked from 'marked'
 import parseDate from './parseDate'
 
-function title (contentFragments) {
-  return marked(contentFragments[0])
-}
-
-function plainTitle (contentFragments) {
-  return striptags(contentFragments[0].slice(2))
-}
-
-function intro (contentFragments) {
-  let i = 2
-  let intro = []
-
-  while (contentFragments[i]) {
-    intro.push(contentFragments[i])
-    i++
-  }
-
-  return marked(intro.join('\n'))
-}
-
 function formattedDate (date, formatPattern = 'Do MMMM YYYY') {
   return format(date, formatPattern)
 }
 
-function formattedDateFromSlug (slug, formatPattern = 'Do MMMM YYYY') {
-  return format(parseDate(slug), formatPattern)
+class MetaParser {
+  constructor (content) {
+    const { attributes, body } = fm(content)
+    this._attributes = attributes
+    this._body = body
+  }
+
+  attributes () {
+    return this._attributes
+  }
+
+  title () {
+    if (this._attributes.title) {
+      const html = marked(this._attributes.title).trim()
+
+      return {
+        html,
+        plain: striptags(html)
+      }
+    }
+  }
+
+  excerpt () {
+    if (this._attributes.excerpt) {
+      const html = marked(this._attributes.excerpt).trim()
+      return {
+        html,
+        plain: striptags(html)
+      }
+    }
+  }
+
+  publishedAt () {
+    if (this._attributes.publishedAt) {
+      return {
+        pretty: formattedDate(this._attributes.publishedAt),
+        iso: formattedDate(this._attributes.publishedAt, null)
+      }
+    }
+  }
+
+  slug () {
+    return this._attributes.slug
+  }
+
+  body () {
+    return this._body
+  }
 }
 
-function contentWithoutTitle (contentFragments) {
-  return marked(contentFragments.slice(2).join('\n'))
-}
+class ContentParser {
+  constructor (content) {
+    const contentFragments = content.trim().split('\n')
+    this._frags = contentFragments
+  }
 
-function frontMatterParser ({ filename, content }) {
-  const { attributes, body } = fm(content)
-  const post = legacyParser({ filename, content: body.trim() })
+  title () {
+    return {
+      html: marked(this._frags[0]).trim(),
+      plain: striptags(this._frags[0].slice(2)).trim()
+    }
+  }
 
-  return {
-    title: {
-      html: attributes.title ? marked(attributes.title).trim() : post.title.trim(),
-      plain: attributes.title ? striptags(marked(attributes.title)).trim() : post.plainTitle.trim()
-    },
-    excerpt: {
-      html: attributes.excerpt ? marked(attributes.excerpt).trim() : post.intro.trim(),
-      plain: attributes.excerpt ? striptags(marked(attributes.excerpt)).trim() : striptags(post.intro).trim()
-    },
-    slug: attributes.slug || filename,
-    publishedAt: {
-      pretty: attributes.publishedAt ? formattedDate(attributes.publishedAt) : post.publishedAt,
-      iso: attributes.publishedAt ? formattedDate(attributes.publishedAt, null) : post.publishedAtISO
-    },
-    content: {
-      html: post.content,
-      plain: striptags(post.content).trim()
+  excerpt () {
+    let i = 2
+    let excerpt = []
+
+    while (this._frags[i]) {
+      excerpt.push(this._frags[i])
+      i++
+    }
+
+    const html = marked(excerpt.join('\n')).trim()
+
+    return {
+      html,
+      plain: striptags(html)
+    }
+  }
+
+  content () {
+    const html = marked(this._frags.slice(2).join('\n')).trim()
+    return {
+      html,
+      plain: striptags(html)
     }
   }
 }
 
-function legacyParser ({ filename, content }) {
-  const contentFragments = content.split('\n')
+function frontMatterParser ({ filename, content }) {
+  const metaParser = new MetaParser(content)
+  const attributes = metaParser.attributes()
+  const body = metaParser.body()
+  const contentParser = new ContentParser(body)
+  const post = legacyParser({ filename, content: body.trim() })
 
   return {
-    title: title(contentFragments),
-    plainTitle: plainTitle(contentFragments),
-    intro: intro(contentFragments),
-    publishedAt: formattedDateFromSlug(filename),
-    publishedAtISO: formattedDateFromSlug(filename, null),
-    content: contentWithoutTitle(contentFragments),
+    title: metaParser.title() || contentParser.title(),
+    excerpt: metaParser.excerpt() || contentParser.excerpt(),
+    slug: metaParser.slug() || filename,
+    publishedAt: metaParser.publishedAt(),
+    content: contentParser.content()
+  }
+}
+
+function legacyFormattedDateFromSlug (slug, formatPattern) {
+  return formattedDate(parseDate(slug), formatPattern)
+}
+
+function legacyPublishedAtFromFilename (filename) {
+  return {
+    pretty: legacyFormattedDateFromSlug(filename),
+    iso: legacyFormattedDateFromSlug(filename, null),
+  }
+}
+
+function legacyParser ({ filename, content }) {
+  const contentParser = new ContentParser(content)
+  const contentFragments = content.split('\n')
+
+  const title = contentParser.title()
+  const excerpt = contentParser.excerpt()
+  const publishedAt = legacyPublishedAtFromFilename(filename)
+  const contentHtml = contentParser.content().html
+
+  return {
+    title: title.html,
+    plainTitle: title.plain,
+    intro: excerpt.html,
+    publishedAt: publishedAt.pretty,
+    publishedAtISO: publishedAt.iso,
+    content: contentHtml,
     slug: filename
   }
 }

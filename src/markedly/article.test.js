@@ -46,9 +46,9 @@ describe('article()', () => {
         content: fs.readFileSync(path.join(__dirname, 'mockContentLegacy.md'), { encoding: 'utf8' })
       })
 
-      expect(post.title).toBe('<h1 id="a-span-title-span-">A <span>title</span></h1>\n')
+      expect(post.title).toBe('<h1 id="a-span-title-span-">A <span>title</span></h1>')
       expect(post.plainTitle).toBe('A title')
-      expect(post.intro).toBe('<p>An introduction\ncool.</p>\n')
+      expect(post.intro).toBe('<p>An introduction\ncool.</p>')
       expect(post.slug).toBe('2016-01-01-cool-things')
       expect(post.publishedAt).toMatch(/[\d]{1,2}(?:st|nd|rd|th) [A-Za-z]+ [\d]{4}/)
       expect(post.publishedAtISO).toBe('2016-01-01T00:00:00.000+00:00')
