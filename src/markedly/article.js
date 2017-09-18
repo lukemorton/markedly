@@ -42,14 +42,14 @@ function frontMatterParser ({ filename, content }) {
 
   return {
     title: {
-      html: post.title.trim(),
-      plain: post.plainTitle.trim()
+      html: attributes.title ? marked(attributes.title).trim() : post.title.trim(),
+      plain: attributes.title ? striptags(marked(attributes.title)).trim() : post.plainTitle.trim()
     },
     excerpt: {
-      html: post.intro.trim(),
-      plain: striptags(post.intro).trim()
+      html: attributes.excerpt ? marked(attributes.excerpt).trim() : post.intro.trim(),
+      plain: attributes.excerpt ? striptags(marked(attributes.excerpt)).trim() : striptags(post.intro).trim()
     },
-    slug: filename,
+    slug: attributes.slug || filename,
     publishedAt: {
       pretty: attributes.publishedAt ? formattedDate(attributes.publishedAt) : post.publishedAt,
       iso: attributes.publishedAt ? formattedDate(attributes.publishedAt, null) : post.publishedAtISO
