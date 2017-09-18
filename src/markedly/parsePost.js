@@ -144,7 +144,7 @@ function legacyParser ({ filename, content }) {
   }
 }
 
-export default function ({ filename, content }) {
+export default function parsePost ({ filename, content }) {
   if (fm.test(content)) {
     return frontMatterParser({ filename, content })
   } else {

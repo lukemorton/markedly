@@ -1,4 +1,4 @@
-import articles from './article'
+import parsePost from './parsePost'
 import parseDate from './parseDate'
 
 function sort (sortable, reverse) {
@@ -29,7 +29,7 @@ function limit (limitable, limit) {
 
 function listOfArticles (filenames, files) {
   return filenames.map(function (filename) {
-    return articles({ filename, content: files[filename] })
+    return parsePost({ filename, content: files[filename] })
   })
 }
 

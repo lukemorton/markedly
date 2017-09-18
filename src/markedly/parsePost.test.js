@@ -1,11 +1,11 @@
 import fs from 'fs'
 import path from 'path'
-import article from './article'
+import parsePost from './parsePost'
 
-describe('article()', () => {
+describe('parsePost()', () => {
   describe('with front matter', () => {
     it('can sensibly parse front matter from markdown', () => {
-      const post = article({
+      const post = parsePost({
         filename: '2017-09-18-cool-things',
         content: fs.readFileSync(path.join(__dirname, 'mockContentWithSomeFrontMatter.md'), { encoding: 'utf8' })
       })
@@ -22,7 +22,7 @@ describe('article()', () => {
     })
 
     it('uses front matter by default', () => {
-      const post = article({
+      const post = parsePost({
         filename: '2017-09-18-cool-things',
         content: fs.readFileSync(path.join(__dirname, 'mockContentWithAllFrontMatter.md'), { encoding: 'utf8' })
       })
@@ -41,7 +41,7 @@ describe('article()', () => {
 
   describe('with legacy parsing', () => {
     it('includes attributes', () => {
-      const post = article({
+      const post = parsePost({
         filename: '2016-01-01-cool-things',
         content: fs.readFileSync(path.join(__dirname, 'mockContentLegacy.md'), { encoding: 'utf8' })
       })
