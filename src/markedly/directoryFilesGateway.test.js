@@ -18,7 +18,7 @@ describe('read', () => {
     const filename = 'cool/testing.md'
     const filePath = path.join(dir, filename)
 
-    beforeEach(async () => await createExampleFile(filePath))
+    beforeEach(async () => createExampleFile(filePath))
     afterEach(() => deleteIfExists(filePath))
 
     it('should read directory into map', async () => {
