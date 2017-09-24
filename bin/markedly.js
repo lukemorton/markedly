@@ -12,6 +12,7 @@ if (config) {
 }
 
 const dir = config.dir || 'posts'
+const outDir = config.outDir || 'dist'
 const preview = process.env.NODE_ENV !== 'production'
 
 process.on('unhandledRejection', (e) => console.error(e))
@@ -23,7 +24,7 @@ async function compile () {
     for (const name in config.lists) {
       const outFilePath = await createListFromDirectory({
         dir,
-        outFilePath: `dist/${dir}/${name}.json`,
+        outFilePath: `${outDir}/${dir}/${name}.json`,
         options: config.lists[name],
         preview
       })
@@ -33,7 +34,7 @@ async function compile () {
 
   const outFilePath = await createMapFromDirectory({
     dir,
-    outFilePath: `dist/${dir}/index.json`,
+    outFilePath: `${outDir}/${dir}/index.json`,
     preview
   })
   console.log(`> ${outFilePath}`)
