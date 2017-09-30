@@ -39,6 +39,7 @@ You can also create lists of posts in your `package.json`:
   "markedly": {
     "lists": {
       "latestArticles": {
+        "sort": "publishedAt",
         "reverse": true,
         "limit": 10
       }
@@ -56,6 +57,7 @@ If you wanted a list of all articles sorted by day, you can skip the limit line.
   "markedly": {
     "lists": {
       "articlesArchive": {
+        "sort": "publishedAt",
         "reverse": true
       }
     }

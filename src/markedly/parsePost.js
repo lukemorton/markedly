@@ -99,16 +99,16 @@ class ContentParser {
 
 function frontMatterParser ({ filename, content }) {
   const metaParser = new MetaParser(content)
-  const attributes = metaParser.attributes()
   const body = metaParser.body()
   const contentParser = new ContentParser(body)
-  const post = legacyParser({ filename, content: body.trim() })
+  const publishedAt = metaParser.publishedAt()
 
   return {
     title: metaParser.title() || contentParser.title(),
     excerpt: metaParser.excerpt() || contentParser.excerpt(),
     slug: metaParser.slug() || filename,
-    publishedAt: metaParser.publishedAt(),
+    publishedAt,
+    __temp_publishedAtISO: publishedAt.iso,
     content: contentParser.content()
   }
 }
@@ -120,14 +120,12 @@ function legacyFormattedDateFromSlug (slug, formatPattern) {
 function legacyPublishedAtFromFilename (filename) {
   return {
     pretty: legacyFormattedDateFromSlug(filename),
-    iso: legacyFormattedDateFromSlug(filename, null),
+    iso: legacyFormattedDateFromSlug(filename, null)
   }
 }
 
 function legacyParser ({ filename, content }) {
   const contentParser = new ContentParser(content)
-  const contentFragments = content.split('\n')
-
   const title = contentParser.title()
   const excerpt = contentParser.excerpt()
   const publishedAt = legacyPublishedAtFromFilename(filename)
@@ -139,12 +137,14 @@ function legacyParser ({ filename, content }) {
     intro: excerpt.html,
     publishedAt: publishedAt.pretty,
     publishedAtISO: publishedAt.iso,
+    __temp_publishedAtISO: publishedAt.iso,
     content: contentHtml,
     slug: filename
   }
 }
 
 export default function parsePost ({ filename, content }) {
+  // console.log(content)
   if (fm.test(content)) {
     return frontMatterParser({ filename, content })
   } else {

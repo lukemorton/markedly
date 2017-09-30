@@ -1,22 +1,45 @@
+import sortBy from 'lodash.sortby'
 import parsePost from './parsePost'
 import parseDate from './parseDate'
 
-function sort (sortable, reverse) {
+function sort (posts, sort = 'slug', reverse = false) {
+  let sortedPosts
+
+  switch (sort) {
+    case 'title':
+      sortedPosts = sortBy(posts, ['title', 'plain'])
+      break
+    case 'publishedAt':
+      sortedPosts = sortBy(posts, ['publishedAt', 'iso'])
+      break
+    default:
+      sortedPosts = sortBy(posts, 'slug')
+  }
+
   if (reverse) {
-    return sortable.sort().reverse()
+    return sortedPosts.reverse()
   } else {
-    return sortable.sort()
+    return sortedPosts
   }
 }
 
-function published (slugs, dev) {
-  if (dev) {
-    return slugs
+function postPublishedAt (post) {
+  if (post.publishedAtISO) {
+    return parseDate(post.publishedAtISO)
+  } else {
+    return parseDate(post.publishedAt.iso)
+  }
+}
+
+function published (posts, preview) {
+  if (preview) {
+    return posts
   }
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  return slugs.filter((slug) => today >= parseDate(slug))
+
+  return posts.filter((post) => today >= postPublishedAt(post))
 }
 
 function limit (limitable, limit) {
@@ -27,7 +50,7 @@ function limit (limitable, limit) {
   }
 }
 
-function listOfArticles (filenames, files) {
+function listOfPosts (filenames, files) {
   return filenames.map(function (filename) {
     return parsePost({ filename, content: files[filename] })
   })
@@ -36,6 +59,6 @@ function listOfArticles (filenames, files) {
 export default function ({ files, options, preview }) {
   options = options || {}
   const filenames = Object.keys(files)
-  const sortedFilenames = limit(published(sort(filenames, options.reverse), preview), options.limit)
-  return listOfArticles(sortedFilenames, files)
+  const posts = listOfPosts(filenames, files)
+  return limit(published(sort(posts, options.sort, options.reverse), preview), options.limit)
 }

@@ -27,7 +27,7 @@ describe('parsePost()', () => {
         content: fs.readFileSync(path.join(__dirname, 'mockContentWithAllFrontMatter.md'), { encoding: 'utf8' })
       })
 
-      expect(post.title.html).toBe('<h1 id=\"a-span-custom-title-span-\">A <span>custom title</span></h1>')
+      expect(post.title.html).toBe('<h1 id="a-span-custom-title-span-">A <span>custom title</span></h1>')
       expect(post.title.plain).toBe('A custom title')
       expect(post.excerpt.html).toBe('<p>This is a custom introduction</p>')
       expect(post.excerpt.plain).toBe('This is a custom introduction')

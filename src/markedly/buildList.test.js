@@ -3,9 +3,9 @@ import buildList from './buildList'
 
 function fakeFiles () {
   return {
-    '2016-01-01-cool': '# Cool',
-    '2016-01-04-cool': '# Cool',
-    '2016-01-02-cool': '# Cool'
+    '2-cool': '---\npublishedAt: 2016-01-01\n---\n\n# Cool',
+    '1-cool': '---\npublishedAt: 2016-01-04\n---\n\n# Cool',
+    '3-cool': '---\npublishedAt: 2016-01-02\n---\n\n# Cool'
   }
 }
 
@@ -18,28 +18,30 @@ describe('buildList', () => {
   it('can be limited', () => {
     const limit = 2
     const list = buildList({ files: fakeFiles(), options: { limit } })
-    const firstDate = list[0].publishedAtISO
-
-    expect(firstDate).toBe(format(new Date(2016, 0, 1)))
     expect(list.length).toBe(limit)
+  })
+
+  it('can be sorted by publishedAt', () => {
+    const files = fakeFiles()
+    const list = buildList({ files, options: { sort: 'publishedAt' } })
+    expect(list[0].publishedAt).toMatchObject({ iso: format(new Date(2016, 0, 1)) })
   })
 
   it('can be reversed', () => {
     const list = buildList({ files: fakeFiles(), options: { reverse: true } })
-    const firstDate = list[0].publishedAtISO
-    expect(firstDate).toBe(format(new Date(2016, 0, 4)))
+    expect(list[0]).toMatchObject({ slug: '3-cool' })
   })
 
   it('excludes articles published in future by default', () => {
     const files = fakeFiles()
-    files['2050-02-01-cool'] = '# Cool'
+    files['4-cool'] = '---\npublishedAt: 2050-02-01\n---\n\n# Cool'
     const list = buildList({ files })
     expect(list.length).toBe(3)
   })
 
-  it('excludes articles published in future in preview mode', () => {
+  it('does not exclude articles published in future in preview mode', () => {
     const files = fakeFiles()
-    files['2050-02-01-cool'] = '# Cool'
+    files['4-cool'] = '---\npublishedAt: 2050-02-01\n---\n\n# Cool'
     const list = buildList({ preview: true, files })
     expect(list.length).toBe(4)
   })
