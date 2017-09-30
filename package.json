@@ -34,7 +34,8 @@
     "prepare": "npm run prepare:bin && npm run prepare:src",
     "prepare:bin": "babel bin/ -d dist/bin/ --ignore *.test.js",
     "prepare:src": "babel src/ -d dist/lib/ --ignore *.test.js",
-    "test": "standard && jest"
+    "test": "standard && jest",
+    "fix": "standard --fix"
   },
   "babel": {
     "plugins": [
