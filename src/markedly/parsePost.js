@@ -132,13 +132,12 @@ function legacyParser ({ filename, content }) {
   const contentHtml = contentParser.content().html
 
   return {
-    title: title.html,
-    plainTitle: title.plain,
-    intro: excerpt.html,
-    publishedAt: publishedAt.pretty,
+    title,
+    excerpt,
+    publishedAt,
     publishedAtISO: publishedAt.iso,
     __temp_publishedAtISO: publishedAt.iso,
-    content: contentHtml,
+    content: { html: contentHtml, plain: content },
     slug: filename
   }
 }
