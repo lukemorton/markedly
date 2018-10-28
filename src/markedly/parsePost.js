@@ -143,7 +143,6 @@ function legacyParser ({ filename, content }) {
 }
 
 export default function parsePost ({ filename, content }) {
-  // console.log(content)
   if (fm.test(content)) {
     return frontMatterParser({ filename, content })
   } else {
