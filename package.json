@@ -21,7 +21,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "fsevents": "^1.2.4",
-    "jest": "^21.0.2",
+    "jest": "^23.6.0",
     "standard": "^10.0.3"
   },
   "engines": {
