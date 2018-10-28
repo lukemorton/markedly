@@ -51,7 +51,7 @@ describe('parsePost()', () => {
       expect(post.excerpt.html).toBe('<p>An introduction\ncool.</p>')
       expect(post.slug).toBe('2016-01-01-cool-things')
       expect(post.publishedAt.pretty).toMatch(/[\d]{1,2}(?:st|nd|rd|th) [A-Za-z]+ [\d]{4}/)
-      expect(post.publishedAtISO).toBe('2016-01-01T00:00:00.000+00:00')
+      expect(post.publishedAt.iso).toMatch('2016-01-01T')
       expect(post.content.html.indexOf('<p>An introduction\ncool.</p>\n')).toBe(0)
     })
   })

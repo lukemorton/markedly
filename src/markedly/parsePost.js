@@ -108,7 +108,6 @@ function frontMatterParser ({ filename, content }) {
     excerpt: metaParser.excerpt() || contentParser.excerpt(),
     slug: metaParser.slug() || filename,
     publishedAt,
-    __temp_publishedAtISO: publishedAt.iso,
     content: contentParser.content()
   }
 }
@@ -135,8 +134,6 @@ function legacyParser ({ filename, content }) {
     title,
     excerpt,
     publishedAt,
-    publishedAtISO: publishedAt.iso,
-    __temp_publishedAtISO: publishedAt.iso,
     content: { html: contentHtml, plain: content },
     slug: filename
   }
