@@ -18,7 +18,7 @@ node_modules/.bin/markedly
 
 By default markedly compiles a directory of markdown, by default it looks in  `posts/`, into a single `dist/posts/index.json` with file paths as keys. Below is an example of the JSON produced:
 
-```
+``` json
 {
   "2017-01-17-lightweight-docker-images-for-go": {
     "title": "<h1 id=\"lightweight-docker-images-for-go\">Lightweight docker images for Go</h1>\n",
@@ -34,7 +34,7 @@ By default markedly compiles a directory of markdown, by default it looks in  `p
 
 You can also create lists of posts in your `package.json`:
 
-```js
+``` json
 {
   "markedly": {
     "lists": {
@@ -52,7 +52,7 @@ When you next run `node_modules/.bin/markedly` it will now produce both `dist/po
 
 If you wanted a list of all articles sorted by day, you can skip the limit line.
 
-```js
+``` json
 {
   "markedly": {
     "lists": {
