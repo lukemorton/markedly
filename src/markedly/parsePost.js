@@ -53,6 +53,10 @@ class MetaParser {
     return this._attributes.slug
   }
 
+  tags () {
+    return this._attributes.tags
+  }
+
   body () {
     return this._body
   }
@@ -107,6 +111,7 @@ function frontMatterParser ({ filename, content }) {
     title: metaParser.title() || contentParser.title(),
     excerpt: metaParser.excerpt() || contentParser.excerpt(),
     slug: metaParser.slug() || filename,
+    tags: metaParser.tags() || [],
     publishedAt,
     content: contentParser.content()
   }
@@ -128,12 +133,14 @@ function legacyParser ({ filename, content }) {
   const title = contentParser.title()
   const excerpt = contentParser.excerpt()
   const publishedAt = legacyPublishedAtFromFilename(filename)
+  const tags = []
   const contentHtml = contentParser.content().html
 
   return {
     title,
     excerpt,
     publishedAt,
+    tags,
     content: { html: contentHtml, plain: content },
     slug: filename
   }

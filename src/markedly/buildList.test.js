@@ -27,6 +27,13 @@ describe('buildList', () => {
     expect(list[0].publishedAt).toMatchObject({ iso: format(new Date(2016, 0, 1)) })
   })
 
+  it('can be filtered by tag', () => {
+    const files = fakeFiles()
+    files['4-cool'] = '---\npublishedAt: 2016-01-05\ntags:\n\t- fiction\n---\n\n# Cool'
+    const list = buildList({ files, options: { tags: ['fiction'] } })
+    expect(list[0].publishedAt).toMatchObject({ iso: format(new Date(2016, 0, 5)) })
+  })
+
   it('can be reversed', () => {
     const list = buildList({ files: fakeFiles(), options: { reverse: true } })
     expect(list[0]).toMatchObject({ slug: '3-cool' })

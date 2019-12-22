@@ -32,6 +32,7 @@ describe('parsePost()', () => {
       expect(post.excerpt.html).toBe('<p>This is a custom introduction</p>')
       expect(post.excerpt.plain).toBe('This is a custom introduction')
       expect(post.slug).toBe('custom-slug')
+      expect(post.tags).toEqual(['fiction'])
       expect(post.publishedAt.pretty).toMatch(/[\d]{1,2}(?:st|nd|rd|th) [A-Za-z]+ [\d]{4}/)
       expect(post.publishedAt.iso).toMatch('2017-09-17T')
       expect(post.content.html.indexOf('<p>An introduction\ncool.</p>\n')).toBe(0)

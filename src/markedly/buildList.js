@@ -42,6 +42,20 @@ function published (posts, preview) {
   return posts.filter((post) => today >= postPublishedAt(post))
 }
 
+function tagged (posts, tags) {
+  if (!tags || tags.length === 0) {
+    return posts
+  } else {
+    return posts.filter((post) => {
+      if (post.tags.length === 0) {
+        return false
+      } else {
+        return tags.find(t => post.tags.find(pt => pt === t))
+      }
+    })
+  }
+}
+
 function limit (limitable, limit) {
   if (limit) {
     return limitable.slice(0, limit)
@@ -60,5 +74,5 @@ export default function ({ files, options, preview }) {
   options = options || {}
   const filenames = Object.keys(files)
   const posts = listOfPosts(filenames, files)
-  return limit(published(sort(posts, options.sort, options.reverse), preview), options.limit)
+  return limit(tagged(published(sort(posts, options.sort, options.reverse), preview), options.tags), options.limit)
 }
