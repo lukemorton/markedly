@@ -10,7 +10,7 @@ describe('parsePost()', () => {
         content: fs.readFileSync(path.join(__dirname, 'mockContentWithSomeFrontMatter.md'), { encoding: 'utf8' })
       })
 
-      expect(post.title.html).toBe('<h1 id="a-span-title-span-">A <span>title</span></h1>')
+      expect(post.title.html).toBe('<h1 id="a-spantitlespan">A <span>title</span></h1>')
       expect(post.title.plain).toBe('A title')
       expect(post.excerpt.html).toBe('<p>An introduction\ncool.</p>')
       expect(post.excerpt.plain).toBe('An introduction\ncool.')
@@ -27,7 +27,7 @@ describe('parsePost()', () => {
         content: fs.readFileSync(path.join(__dirname, 'mockContentWithAllFrontMatter.md'), { encoding: 'utf8' })
       })
 
-      expect(post.title.html).toBe('<h1 id="a-span-custom-title-span-">A <span>custom title</span></h1>')
+      expect(post.title.html).toBe('<h1 id="a-spancustom-titlespan">A <span>custom title</span></h1>')
       expect(post.title.plain).toBe('A custom title')
       expect(post.excerpt.html).toBe('<p>This is a custom introduction</p>')
       expect(post.excerpt.plain).toBe('This is a custom introduction')
@@ -46,7 +46,7 @@ describe('parsePost()', () => {
         content: fs.readFileSync(path.join(__dirname, 'mockContentLegacy.md'), { encoding: 'utf8' })
       })
 
-      expect(post.title.html).toBe('<h1 id="a-span-title-span-">A <span>title</span></h1>')
+      expect(post.title.html).toBe('<h1 id="a-spantitlespan">A <span>title</span></h1>')
       expect(post.title.plain).toBe('A title')
       expect(post.excerpt.html).toBe('<p>An introduction\ncool.</p>')
       expect(post.slug).toBe('2016-01-01-cool-things')
