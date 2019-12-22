@@ -73,7 +73,7 @@ class ContentParser {
 
   excerpt () {
     let i = 2
-    let excerpt = []
+    const excerpt = []
 
     while (this._frags[i]) {
       excerpt.push(this._frags[i])
