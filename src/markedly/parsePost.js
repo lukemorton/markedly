@@ -15,10 +15,6 @@ class MetaParser {
     this._body = body
   }
 
-  attributes () {
-    return this._attributes
-  }
-
   title () {
     if (this._attributes.title) {
       const html = marked(this._attributes.title).trim()
