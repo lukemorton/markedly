@@ -69,9 +69,18 @@ class ContentParser {
   }
 
   title () {
+    const html = marked(this._frags[0]).trim()
+    let plain
+
+    if (this._frags[0][0] === '#') {
+      plain = striptags(this._frags[0].slice(2)).trim()
+    } else {
+      plain = striptags(this._frags[0]).trim()
+    }
+
     return {
-      html: marked(this._frags[0]).trim(),
-      plain: striptags(this._frags[0].slice(2)).trim()
+      html,
+      plain
     }
   }
 
