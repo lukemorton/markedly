@@ -49,6 +49,10 @@ class MetaParser {
     return this._attributes.slug
   }
 
+  featuredImage () {
+    return this._attributes.featuredImage
+  }
+
   tags () {
     return this._attributes.tags
   }
@@ -111,12 +115,14 @@ function frontMatterParser ({ filename, content }) {
   const body = metaParser.body()
   const contentParser = new ContentParser(body)
   const publishedAt = metaParser.publishedAt()
+  const featuredImage = metaParser.featuredImage()
 
   return {
     title: metaParser.title() || contentParser.title(),
     excerpt: metaParser.excerpt() || contentParser.excerpt(),
     slug: metaParser.slug() || filename,
     tags: metaParser.tags() || [],
+    featuredImage,
     publishedAt,
     content: contentParser.content()
   }
