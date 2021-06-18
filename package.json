@@ -12,7 +12,7 @@
     "lodash.partial": "^4.2.1",
     "lodash.sortby": "^4.7.0",
     "marked": "^0.8.0",
-    "striptags": "^2.1.1"
+    "striptags": "^3.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.7",
